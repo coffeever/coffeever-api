@@ -43,9 +43,9 @@ public class CoffeeMergeController {
 
     // id ile kahve döndür
     @GetMapping("/getSingleCoffee")
-    public CoffeeMerged getSingleCoffee(@RequestParam String slug) {
+    public CoffeeMerged getSingleCoffee(@RequestBody CoffeeMerged coffeeMerged) {
 
-        return coffeeMergeService.getCoffeeById(slug);
+        return coffeeMergeService.getCoffeeById(coffeeMerged.getSlug());
     }
 }
 
