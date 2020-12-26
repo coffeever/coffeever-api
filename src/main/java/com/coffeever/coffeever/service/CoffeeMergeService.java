@@ -1,9 +1,9 @@
 package com.coffeever.coffeever.service;
 
-
 import com.coffeever.coffeever.model.CoffeeMerged;
-import com.coffeever.coffeever.model.ReturnCoffes;
+import com.coffeever.coffeever.model.User;
 import com.coffeever.coffeever.repository.CoffeeMergedRepo;
+import com.coffeever.coffeever.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,43 +15,52 @@ public class CoffeeMergeService {
 
     @Autowired
     CoffeeMergedRepo coffeeMergedRepo;
+    @Autowired
+    UserRepository userRepository;
 
     //databaseden id ile coffee döndürür
-    public CoffeeMerged getCoffeeById(String slug) {
-        return coffeeMergedRepo.findById(slug).orElse(null);
-    }
-
-
-    //5 coffee ile istenen fieldları döndüren method
-    public ArrayList<ReturnCoffes> rightFieldsCoffee(List<CoffeeMerged> coffes) {
-        ArrayList<ReturnCoffes> coffeeList = new ArrayList<>();
-
-        for(int i=0;i<5;i++) {
-
-            ReturnCoffes returnCoffes = new ReturnCoffes(coffes.get(i).getSlug(),
-                    coffes.get(i).getAroma(),coffes.get(i).getAcidity(),
-                    coffes.get(i).getBody(),coffes.get(i).getFlavor(),
-                    coffes.get(i).getRoast(),coffes.get(i).getRegion(),
-                    coffes.get(i).getDecaf(),coffes.get(i).getName(),
-                    coffes.get(i).getBlindAssessment());
-
-            coffeeList.add(returnCoffes);
-        }
-        return  coffeeList;
+    public CoffeeMerged getCoffeeById(CoffeeMerged coffeeMerged) {
+        return coffeeMergedRepo.findById(coffeeMerged.getSlug()).orElse(null);
     }
 
     // Return best match based on given 6 main parameters
     public List<CoffeeMerged> findBestMatch(int aroma, int acidity, int body, int flavor, int decaf, String keywords) {
         CoffeeMerged askedBean = new CoffeeMerged(aroma, acidity, body, flavor, decaf, keywords);
-        TopNBestMatches closestBeans = new TopNBestMatches();
-        return closestBeans.bestMatch(askedBean, getAllCoffees());
+        ItemBasedFiltering itemBasedFiltering = new ItemBasedFiltering();
+
+        return itemBasedFiltering.bestMatch(askedBean, getAllCoffees());
     }
 
-
-
-
-    //databasedeki coffee listesini döndürür
+    //  databasedeki coffee listesini döndürür
     public List<CoffeeMerged> getAllCoffees() {
         return coffeeMergedRepo.findAll();
+    }
+
+    //  Returns 3 coffees based on a user's favorites
+    public List<CoffeeMerged> findBasedOnFavs(long google_id){
+        ItemBasedFiltering itemBasedFiltering = new ItemBasedFiltering();   // To access filtering methods defined in ItemBasedFiltering
+
+        User user = userRepository.findById(google_id).orElse(null);  // To copy user with given id
+        List<CoffeeMerged> favList= new ArrayList<CoffeeMerged>();          // To send favorite coffees in a list
+
+        String[] favs = new String[0];                                      // To store the id's of favorites in a string array first
+        if (user != null) {
+            favs = user.getFavorites().replaceAll("\\s+", "").toLowerCase().split(",");
+        }
+        for (String sample : favs){                                         // To add CoffeeMerged objects in a list after reading their id's as String
+            favList.add(coffeeMergedRepo.findById(sample).orElse(null));
+        }
+
+        return itemBasedFiltering.bestMatchForFavs(favList, getAllCoffees());                // Send a Coffee list, get another Coffee List to return
+    }
+
+    //  Adds a favorite coffee to a user's favorites.
+    public void addFavorite(long google_id, String slug){
+
+        User user = userRepository.findById(google_id).orElse(null);
+        assert user != null;
+        user.addFavorites(slug);
+
+        userRepository.save(user);
     }
 }

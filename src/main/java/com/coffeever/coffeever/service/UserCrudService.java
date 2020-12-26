@@ -30,11 +30,16 @@ public class UserCrudService {
     public User updateUser(User user) {
 
         User existingUser = userRepository.findById(user.getGoogle_id()).orElse(null);
+        assert existingUser != null;
         existingUser.setName(user.getName());
         existingUser.setMail(user.getMail());
 
         return userRepository.save(existingUser);
     }
-
+//
+//    public void addFavorite(long google_id, String slug){
+//
+//        userRepository.findById(google_id).ifPresent(user -> user.addFavorites(slug));
+//    }
 
 }
