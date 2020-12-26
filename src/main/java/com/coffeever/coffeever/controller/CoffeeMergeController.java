@@ -2,12 +2,12 @@ package com.coffeever.coffeever.controller;
 
 
 import com.coffeever.coffeever.model.CoffeeMerged;
-import com.coffeever.coffeever.model.ReturnCoffes;
+import com.coffeever.coffeever.model.User;
 import com.coffeever.coffeever.service.CoffeeMergeService;
+import com.coffeever.coffeever.service.UserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,6 +17,7 @@ public class CoffeeMergeController {
 
     @Autowired
     CoffeeMergeService coffeeMergeService;
+    UserCrudService userCrudService;
 
     @GetMapping("/getAllCoffees")
     public List<CoffeeMerged> findAllBeans() {
@@ -25,27 +26,23 @@ public class CoffeeMergeController {
     }
 
     @GetMapping("/findBestMatch")
-    public List<ReturnCoffes> findBestMatches(@RequestBody CoffeeMerged coffeeMerged) {
-    /*
+    public List<CoffeeMerged> findBestMatches(@RequestBody CoffeeMerged coffeeMerged) {
+
         return  coffeeMergeService.findBestMatch(coffeeMerged.getAroma(),coffeeMerged.getAcidity(),
                 coffeeMerged.getBody(),coffeeMerged.getFlavor(),
-                coffeeMerged.getDecaf(),coffeeMerged.getKeywords());*/
-
-        //istenen field'lar bununla döndürülecek
-        List<CoffeeMerged> bestMatchesList =
-                coffeeMergeService.findBestMatch(coffeeMerged.getAroma(),coffeeMerged.getAcidity(),
-                        coffeeMerged.getBody(),coffeeMerged.getFlavor(),
-                        coffeeMerged.getDecaf(),coffeeMerged.getKeywords());
-
-        return coffeeMergeService.rightFieldsCoffee(bestMatchesList);
+                coffeeMerged.getDecaf(),coffeeMerged.getKeywords());
 
     }
 
-    // id ile kahve döndür
-    @GetMapping("/getSingleCoffee")
-    public CoffeeMerged getSingleCoffee(@RequestBody CoffeeMerged coffeeMerged) {
+    @GetMapping("/addFavorite")
+    public void addFavorite(@RequestBody User user){
 
-        return coffeeMergeService.getCoffeeById(coffeeMerged.getSlug());
+        coffeeMergeService.addFavorite(user.getGoogle_id(), user.getFavorites());
+    }
+
+    @GetMapping("/findBasedOnFavs")
+    public List<CoffeeMerged> findBasedOnFavs(@RequestBody User user){
+
+        return coffeeMergeService.findBasedOnFavs(user.getGoogle_id());
     }
 }
-
