@@ -1,12 +1,13 @@
 package com.coffeever.coffeever.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 
 
 @Entity
@@ -25,9 +26,16 @@ public class User {
     @Column
     private String mail;
 
+    @Column
+    private String favorites;
 
+    public void addFavorites(String favorites) {
+        String newEntry = favorites + ", ";
+        this.favorites += newEntry;
+    }
 
-
-
-
+    public User(long google_id, String favorites) {
+        this.google_id = google_id;
+        this.favorites = favorites;
+    }
 }

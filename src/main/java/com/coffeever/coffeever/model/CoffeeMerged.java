@@ -1,6 +1,8 @@
 package com.coffeever.coffeever.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.Table;
 
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "coffee_merged")
 public class CoffeeMerged {
@@ -63,16 +67,12 @@ public class CoffeeMerged {
     private String keywords;
 
 
-    public CoffeeMerged(int aroma, int acidity, int body, int flavor, int decaf, String keyword) {
+    public CoffeeMerged(int aroma,int acidity,int body,int flavor,int decaf,String keyword) {
         this.aroma = aroma;
         this.acidity = acidity;
         this.body = body;
         this.flavor = flavor;
         this.decaf=decaf;
         this.keywords = keyword;
-    }
-
-    public CoffeeMerged() {
-
     }
 }
