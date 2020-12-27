@@ -58,15 +58,16 @@ public class ItemBasedFiltering {
 
     public List<CoffeeMerged> bestMatchForFavs(List<CoffeeMerged> favs, Iterable<CoffeeMerged> allBeans) {
 
-        int avgAroma = 0, avgAcidity = 0, avgBody = 0, avgFlavor = 0;           // Initialized attributes to store average values
+        float avgAroma = 0, avgAcidity = 0, avgBody = 0, avgFlavor = 0;           // Initialized attributes to store average values
         ArrayList<String> keywords = new ArrayList<>();                         // To store the union of all the keywords
         List<CoffeeMerged> bestMatches = new ArrayList<>();                     // To store the coffees to be returned
 
         for (CoffeeMerged sample : favs){                                       // To calculate attributes of average coffee
-            avgAroma += sample.getAroma()/favs.size();
-            avgAcidity += sample.getAcidity()/favs.size();
-            avgBody += sample.getBody()/favs.size();
-            avgFlavor += sample.getFlavor()/favs.size();
+            avgAroma += sample.getAroma()/(float)favs.size();
+            avgAcidity += sample.getAcidity()/(float)favs.size();
+            avgBody += sample.getBody()/(float)favs.size();
+            avgFlavor += sample.getFlavor()/(float)favs.size();
+
             if (sample.getKeywords() != null){
                 for (String key : sample.getKeywords().replaceAll("\\s+", "").toLowerCase().split(",")){
                     if (!keywords.contains(key)){
@@ -77,13 +78,14 @@ public class ItemBasedFiltering {
         }
 
         String allKeys = String.join(", ", keywords);                   // Turn the keywords into a string again
-        CoffeeMerged pref = new CoffeeMerged(avgAroma, avgAcidity, avgBody, avgFlavor, 0, allKeys);
+        CoffeeMerged pref = new CoffeeMerged(Math.round(avgAroma), Math.round(avgAcidity), Math.round(avgBody), Math.round(avgFlavor), 0, allKeys);
 
         int n = 3;                                                        // Amount of item to be returned
         double gap;
         for (int i = 0; i < n; i++) {
             CoffeeMerged closestBean = new CoffeeMerged(0, 0, 0, 0, 0, "");     // Best match in each iteration
             gap = 22;                                            // Max difference possible
+
             for (CoffeeMerged bean : allBeans) {
                 if (bestMatches.contains(bean) || favs.contains(bean))   // Don't compare if it already in the list or
                     continue;                                            // favorites.

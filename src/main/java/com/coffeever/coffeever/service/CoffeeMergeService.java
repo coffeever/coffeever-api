@@ -47,6 +47,9 @@ public class CoffeeMergeService {
         if (user != null) {
             favs = user.getFavorites().replaceAll("\\s+", "").toLowerCase().split(",");
         }
+        else
+            return null;
+
         for (String sample : favs){                                         // To add CoffeeMerged objects in a list after reading their id's as String
             favList.add(coffeeMergedRepo.findById(sample).orElse(null));
         }
