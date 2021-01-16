@@ -16,7 +16,8 @@ public class UserLoginController {
     @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE)
     public User loginCheck(@RequestBody User user) {
         if(userCrudService.findUserById(user.getGoogle_id()) == null) {
-            User newUser = userCrudService.addUser(user);
+            User newUser = new User(user.getGoogle_id(),user.getName(),user.getMail(),user.getFavorites());
+            userCrudService.addUser(newUser);
             return newUser;
         }
         else {
