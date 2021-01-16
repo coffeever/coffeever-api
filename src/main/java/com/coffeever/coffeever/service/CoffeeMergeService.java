@@ -40,7 +40,7 @@ public class CoffeeMergeService {
     public List<CoffeeMerged> getAllCoffees(int offset, int limit) {
         List<CoffeeMerged> allCoffees = coffeeMergedRepo.findAll();
 
-        return allCoffees.subList(offset, limit);
+        return allCoffees.subList(offset, offset + limit);
     }
 
     //  Returns 3 coffees based on a user's favorites
