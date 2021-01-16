@@ -17,8 +17,8 @@ public class UserLoginController {
     public User loginCheck(@RequestBody User user) {
         if(userCrudService.findUserById(user.getGoogle_id()) == null) {
             User newUser = new User(user.getGoogle_id(),user.getName(),user.getMail(),user.getFavorites());
-            userCrudService.addUser(newUser);
-            return newUser;
+            return userCrudService.addUser(newUser);
+
         }
         else {
             User existUser = userCrudService.findUserById(user.getGoogle_id());

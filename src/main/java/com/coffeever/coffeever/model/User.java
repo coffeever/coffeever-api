@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class User {
 
     @Id
-    private long google_id;
+    private String google_id;
 
     @Column
     private String name;
@@ -39,7 +39,7 @@ public class User {
         this.favorites = this.favorites.replace(toBeDeleted, "");
     }
 
-    public User(long google_id, String favorites) {
+    public User(String google_id, String favorites) {
         this.google_id = google_id;
         this.favorites = favorites;
     }
