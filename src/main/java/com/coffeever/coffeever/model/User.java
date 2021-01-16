@@ -34,6 +34,11 @@ public class User {
         this.favorites += newEntry;
     }
 
+    public void deleteFavorite(String slug){
+        String toBeDeleted = slug + ", ";
+        this.favorites = this.favorites.replace(toBeDeleted, "");
+    }
+
     public User(long google_id, String favorites) {
         this.google_id = google_id;
         this.favorites = favorites;
