@@ -12,7 +12,7 @@ public class UserCrudService {
     UserRepository userRepository;
 
     //google id ile databaseden user bulur
-    public User findUserById(Long google_id) {
+    public User findUserById(String google_id) {
         return userRepository.findById(google_id).orElse(null);
     }
 
