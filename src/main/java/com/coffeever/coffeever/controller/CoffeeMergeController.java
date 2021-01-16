@@ -18,11 +18,22 @@ public class CoffeeMergeController {
     @Autowired
     CoffeeMergeService coffeeMergeService;
     UserCrudService userCrudService;
+    
+    @GetMapping("/getSingleCoffee")
+    public CoffeeMerged singleCoffee(@RequestBody CoffeeMerged coffeeMerged) {
+        return coffeeMergeService.getCoffeeById(coffeeMerged);
+    }
 
     @GetMapping("/getAllCoffees")
     public List<CoffeeMerged> findAllBeans() {
 
         return coffeeMergeService.getAllCoffees();
+    }
+    
+    @GetMapping("/getSomeCoffee")
+    public List<CoffeeMerged> findAllBeans(@RequestBody Pagination page) {
+
+        return coffeeMergeService.getAllCoffees(page.getOffset(), page.getLimit());
     }
 
     @GetMapping("/findBestMatch")
@@ -31,7 +42,6 @@ public class CoffeeMergeController {
         return  coffeeMergeService.findBestMatch(coffeeMerged.getAroma(),coffeeMerged.getAcidity(),
                 coffeeMerged.getBody(),coffeeMerged.getFlavor(),
                 coffeeMerged.getDecaf(),coffeeMerged.getKeywords());
-
     }
 
     @GetMapping("/addFavorite")
@@ -58,8 +68,5 @@ public class CoffeeMergeController {
         return coffeeMergeService.findBasedOnFavs(user.getGoogle_id());
     }
 
-    @GetMapping("/getSingleCoffee")
-    public CoffeeMerged singleCoffee(@RequestBody CoffeeMerged coffeeMerged) {
-        return coffeeMergeService.getCoffeeById(coffeeMerged);
-    }
+    
 }
