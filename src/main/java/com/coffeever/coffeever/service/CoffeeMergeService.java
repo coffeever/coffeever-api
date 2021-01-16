@@ -66,4 +66,28 @@ public class CoffeeMergeService {
 
         userRepository.save(user);
     }
+
+    public void deleteUserFavorite(long google_id, String slug){
+
+        User user = userRepository.findById(google_id).orElse(null);
+        assert user != null;
+        user.deleteFavorite(slug);
+
+        userRepository.save(user);
+    }
+
+    public List<CoffeeMerged> getUserFavorites(long google_id){
+
+        List<CoffeeMerged> favList = new ArrayList<CoffeeMerged>();
+
+        User user = userRepository.findById(google_id).orElse(null);
+        assert user != null;
+
+        String[] userFavs = user.getFavorites().replaceAll("\\s+","").split(",");
+        for(String fav : userFavs){
+            favList.add(coffeeMergedRepo.findById(fav).orElse(null));
+        }
+
+        return favList;
+    }
 }
