@@ -35,6 +35,13 @@ public class CoffeeMergeService {
     public List<CoffeeMerged> getAllCoffees() {
         return coffeeMergedRepo.findAll();
     }
+    
+    //  databasedeki coffee listesini verilen index aralığında döndürür
+    public List<CoffeeMerged> getAllCoffees(int offset, int limit) {
+        List<CoffeeMerged> allCoffees = coffeeMergedRepo.findAll();
+
+        return allCoffees.subList(offset, limit);
+    }
 
     //  Returns 3 coffees based on a user's favorites
     public List<CoffeeMerged> findBasedOnFavs(long google_id){
