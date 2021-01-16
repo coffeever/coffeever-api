@@ -44,7 +44,7 @@ public class CoffeeMergeService {
     }
 
     //  Returns 3 coffees based on a user's favorites
-    public List<CoffeeMerged> findBasedOnFavs(long google_id){
+    public List<CoffeeMerged> findBasedOnFavs(String google_id){
         ItemBasedFiltering itemBasedFiltering = new ItemBasedFiltering();   // To access filtering methods defined in ItemBasedFiltering
 
         User user = userRepository.findById(google_id).orElse(null);  // To copy user with given id
@@ -65,7 +65,7 @@ public class CoffeeMergeService {
     }
 
     //  Adds a favorite coffee to a user's favorites.
-    public void addFavorite(long google_id, String slug){
+    public void addFavorite(String google_id, String slug){
 
         User user = userRepository.findById(google_id).orElse(null);
         assert user != null;
@@ -74,7 +74,7 @@ public class CoffeeMergeService {
         userRepository.save(user);
     }
 
-    public void deleteUserFavorite(long google_id, String slug){
+    public void deleteUserFavorite(String google_id, String slug){
 
         User user = userRepository.findById(google_id).orElse(null);
         assert user != null;
@@ -83,7 +83,7 @@ public class CoffeeMergeService {
         userRepository.save(user);
     }
 
-    public List<CoffeeMerged> getUserFavorites(long google_id){
+    public List<CoffeeMerged> getUserFavorites(String google_id){
 
         List<CoffeeMerged> favList = new ArrayList<CoffeeMerged>();
 
