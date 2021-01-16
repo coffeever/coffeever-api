@@ -2,6 +2,7 @@ package com.coffeever.coffeever.controller;
 
 
 import com.coffeever.coffeever.model.CoffeeMerged;
+import com.coffeever.coffeever.model.Pagination;
 import com.coffeever.coffeever.model.User;
 import com.coffeever.coffeever.service.CoffeeMergeService;
 import com.coffeever.coffeever.service.UserCrudService;
