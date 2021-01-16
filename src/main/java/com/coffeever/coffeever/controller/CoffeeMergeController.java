@@ -6,7 +6,9 @@ import com.coffeever.coffeever.model.User;
 import com.coffeever.coffeever.service.CoffeeMergeService;
 import com.coffeever.coffeever.service.UserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -32,15 +34,22 @@ public class CoffeeMergeController {
 
     }
 
-    @GetMapping("/findBestMatch2/{aroma}/{acidity}/{body}/{flavor}/{decaf}")
-    public List<CoffeeMerged> findBestMatch2(@PathVariable("aroma") int aroma, @PathVariable("decaf") int decaf, @PathVariable("acidity") int acidity, @PathVariable("body") int body, @PathVariable("flavor") int flavor) {
-        return coffeeMergeService.findBestMatch(aroma, acidity, body, flavor, decaf, "");
-    }
-
     @GetMapping("/addFavorite")
     public void addFavorite(@RequestBody User user){
 
         coffeeMergeService.addFavorite(user.getGoogle_id(), user.getFavorites());
+    }
+
+    @GetMapping("/deleteUserFavorite")
+    public void deleteUserFavorite(@RequestBody User user){
+
+        coffeeMergeService.deleteUserFavorite(user.getGoogle_id(), user.getFavorites());
+    }
+
+    @GetMapping("/getUserFavorite")
+    public List<CoffeeMerged> getUserFavorite(@RequestBody User user){
+
+        return coffeeMergeService.getUserFavorites(user.getGoogle_id());
     }
 
     @GetMapping("/findBasedOnFavs")
