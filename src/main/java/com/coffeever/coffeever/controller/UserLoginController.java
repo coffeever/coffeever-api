@@ -16,10 +16,15 @@ public class UserLoginController {
     @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE)
     public User loginCheck(@RequestBody User user) {
         if(userCrudService.findUserById(user.getGoogle_id()) == null) {
+            User newUser = userCrudService.addUser(user);
+            return newUser;
+
+        }
+        /*if(userCrudService.findUserById(user.getGoogle_id()) == null) {
             User newUser = new User(user.getGoogle_id(),user.getName(),user.getMail(),user.getFavorites());
             return userCrudService.addUser(newUser);
 
-        }
+        }*/
         else {
             User existUser = userCrudService.findUserById(user.getGoogle_id());
            return existUser;
