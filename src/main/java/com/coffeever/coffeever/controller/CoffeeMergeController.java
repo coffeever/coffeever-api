@@ -57,4 +57,9 @@ public class CoffeeMergeController {
 
         return coffeeMergeService.findBasedOnFavs(user.getGoogle_id());
     }
+
+    @GetMapping("/getSingleCoffee")
+    public CoffeeMerged singleCoffee(@RequestBody CoffeeMerged coffeeMerged) {
+        return coffeeMergeService.getCoffeeById(coffeeMerged);
+    }
 }
